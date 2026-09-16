@@ -1,23 +1,30 @@
+import 'dart:math';
+
+import 'package:bmi_app/model/user_bmi_model.dart';
+import 'package:bmi_app/screens/result_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import '../widgets/info_widget.dart';
+
 import '../widgets/gender_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
+  static String route = "HomeScreen";
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   bool switchBtn = false;
-
   bool maleSelected = true;
   bool femaleSelected = false;
-
   int height = 116;
   int weight = 92;
   int age = 30;
+
+ bool isMale = true;
 
   @override
   Widget build(BuildContext context) {
@@ -183,19 +190,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        height: 75,
-        color: const Color(0xff3D81E8),
-        child: MaterialButton(
-          onPressed: () {},
-          child: const Text(
-            "Calculate",
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+    bottomNavigationBar: CustomButtonBMI(
+              title: "Calculate",
+              onPressed: () {
+           var user = UserBmiModel(
+                 Gender: isMale ? 'male' : 'female',
+                 Height: height,
+                 Weight: weight,
+                 Age: age,
+               );
+       
+           Navigator.of(context).pushNamed(
+               ResultScreen.route,
+               arguments: user,
+          );
+        },
+       ), 
+    );
+  }
+}
+
+class CustomButtonBMI extends StatelessWidget {
+  const new({  super.key, required this.title, required this.onPressed
+  });
+final String title;
+final void Function()? onPressed;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 75,
+      color: const Color(0xff3D81E8),
+      child: MaterialButton(
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),
