@@ -7,12 +7,14 @@ class GenderWidget extends StatelessWidget {
     required this.title,
     required this.isSelected,
     required this.onTap,
+    required this.isLight,
   });
 
   final String image;
   final String title;
   final bool isSelected;
   final void Function() onTap;
+  final bool isLight;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,9 @@ class GenderWidget extends StatelessWidget {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xff24263B)
+                ? (isLight
+                    ? const Color(0xffF2F2F2)
+                    : const Color(0xff24263B))
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
@@ -33,14 +37,22 @@ class GenderWidget extends StatelessWidget {
               Image.asset(
                 image,
                 height: 60,
+                // لو مختارة وفي الفاتح تاخد اللون الوردي، لو مش مختارة في الفاتح نديها لون رمادي داكن شوية عشان تبان وما تختفيش
+                color: isLight
+                    ? (isSelected
+                        ? const Color(0xffE83D67)
+                        : Colors.black54) // لون واضح للغير مختارة في الفاتح
+                    : null, // في الدارك مود تس زي ما هي
               ),
               const SizedBox(height: 15),
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xff8B8C9E),
+                  color: isLight
+                      ? Colors.black
+                      : const Color(0xff8B8C9E),
                 ),
               ),
             ],

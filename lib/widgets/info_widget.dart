@@ -7,19 +7,23 @@ class InfoUserWidget extends StatelessWidget {
     required this.value,
     required this.add,
     required this.remove,
+    required this.isLight,
   });
 
   final String title;
   final int value;
   final void Function() add;
   final void Function() remove;
+  final bool isLight;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0xff24263B),
+          color: isLight
+              ? const Color(0xffF2F2F2)
+              : const Color(0xff24263B),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -30,40 +34,47 @@ class InfoUserWidget extends StatelessWidget {
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w300,
-                color: Color(0xff8B8C9E),
+                color: isLight
+                    ? Colors.grey
+                    : const Color(0xff8B8C9E),
               ),
             ),
+
             Text(
               value.toString(),
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Color(0xffFFFFFF),
+                color: isLight
+                    ? Colors.black
+                    : const Color(0xffFFFFFF),
               ),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
                   style: IconButton.styleFrom(
-                    backgroundColor: Color(0xff8B8C9E),
+                    backgroundColor: const Color(0xff8B8C9E),
                     elevation: 5,
                     shadowColor: Colors.grey,
                   ),
                   onPressed: remove,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.remove,
                     color: Color(0xffFFFFFF),
                   ),
                 ),
+
                 IconButton(
                   style: IconButton.styleFrom(
-                    backgroundColor: Color(0xff8B8C9E),
+                    backgroundColor: const Color(0xff8B8C9E),
                     elevation: 5,
                     shadowColor: Colors.grey,
                   ),
                   onPressed: add,
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.add,
                     color: Color(0xffFFFFFF),
                   ),
@@ -76,3 +87,4 @@ class InfoUserWidget extends StatelessWidget {
     );
   }
 }
+

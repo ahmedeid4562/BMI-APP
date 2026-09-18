@@ -4,22 +4,29 @@ import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({super.key});
-   static String route = "ResultScreen";
+  static String route = "ResultScreen";
 
   @override
   Widget build(BuildContext context) {
     var arguments = ModalRoute.of(context)?.settings.arguments as UserBmiModel;
+    
+    // استخدام المتغير لتحديد هل الصفحة فاتحة ولا غامقة
+    final bool isLight = arguments.isLight;
+
     return Scaffold(
-      backgroundColor: const Color(0xff1C2135),
+      backgroundColor: isLight ? Colors.white : const Color(0xff1C2135),
       appBar: AppBar(
         elevation: 10,
-        backgroundColor: const Color(0xff1C2135),
-        title: const Text(
+        backgroundColor: isLight ? Colors.white : const Color(0xff1C2135),
+        iconTheme: IconThemeData(
+          color: isLight ? Colors.black : Colors.white, // لون زر الرجوع
+        ),
+        title: Text(
           "BMI Calculator",
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: Colors.white,
+            color: isLight ? Colors.black : Colors.white,
           ),
           textAlign: TextAlign.center,
         ),
@@ -27,52 +34,53 @@ class ResultScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
-          crossAxisAlignment: .start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Your Result",
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: Color(0xffFFFFFF),
+                color: isLight ? Colors.black : const Color(0xffFFFFFF),
               ),
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Expanded(
               child: Container(
-                padding: EdgeInsets.all(60),
+                width: double.infinity,
+                padding: const EdgeInsets.all(40),
                 decoration: BoxDecoration(
-                  color: Color(0xff333244),
+                  // لون خلفية الكارت يتغير حسب المود
+                  color: isLight ? const Color(0xffF2F2F2) : const Color(0xff333244),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 60),
                     Text(
                       arguments.stringView,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color:arguments.categoryColor,
+                        color: arguments.categoryColor,
                       ),
                     ),
-                    SizedBox(height: 33),
-
+                    const SizedBox(height: 33),
                     Text(
                       arguments.ResulteBmi.toString(),
                       style: TextStyle(
                         fontSize: 64,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xffFFFFFF),
+                        color: isLight ? Colors.black : const Color(0xffFFFFFF),
                       ),
                     ),
-                    SizedBox(height: 60),
+                    const SizedBox(height: 40),
                     Text(
                       arguments.healthAdvice,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xff88C9EE),
+                        color: isLight ? const Color(0xff3D81E8) : const Color(0xff88C9EE),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -80,13 +88,16 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
             ),
-          SizedBox(height: 10),
+            const SizedBox(height: 10),
           ],
         ),
       ),
-      bottomNavigationBar: CustomButtonBMI(title:"Re - Calculate", onPressed: (){
-        Navigator.of(context).pop();
-      }),
+      bottomNavigationBar: CustomButtonBMI(
+        title: "Re - Calculate",
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
     );
   }
 }
